@@ -1,0 +1,8 @@
+---
+applications:
+- name: gs-native-image
+  memory: 256M
+  instances: 1
+  host: native-image
+  domain: guides.spring.io
+  path: build/libs/gs-native-image-0.1.0.jar

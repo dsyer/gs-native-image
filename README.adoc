@@ -1,0 +1,129 @@
+:spring_version: current
+:toc:
+:project_id: native-image-complete
+:icons: font
+:source-highlighter: prettify
+
+This guide walks you through the process of creating a "`Hello, World`" RESTful web
+service with Spring and compiling it to a native image.
+
+== What You Will Build
+
+You will build a service that will accept HTTP GET requests at
+`http://localhost:8080/greeting`. The application will be started using a native image binary compiled with https://www.graalvm.org/[GraalVM]. It should start very quickly (usually under 100ms) compared to a regular JVM.
+
+== What You Need
+
+:java_version: 17
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/prereq_editor_jdk_buildtools.adoc[]
+
+To build a native image directly in your shell the JDK must be GraalVM version 22.3 or better. You can download and install that from the GraalVM website, or use https://sdkman.io/[sdkman] to install a JVM from the `nik` or `grl` distributions, e.g.
+
+```
+sdk install java 22.3.r17.ea-nik
+sdk use java 22.3.r17.ea-nik
+```
+
+Alternatively you can skip the section on building a native image on the command line and use a buildpack, in which case there is no need for GraalVM or the `native-image` tools in your development environment.
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/how_to_complete_this_guide.adoc[]
+
+[[scratch]]
+== Starting with Spring Initializr
+
+You can use this https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.0&packaging=jar&jvmVersion=17&groupId=com.example&artifactId=native-image&name=native-image&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.nativeimage&dependencies=web[pre-initialized project] and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
+
+To manually initialize the project:
+
+. Navigate to https://start.spring.io.
+This service pulls in all the dependencies you need for an application and does most of the setup for you.
+. Choose either Gradle or Maven and the language you want to use. This guide assumes that you chose Java.
+. Click *Dependencies* and select *Spring Web*.
+. Click *Generate*.
+. Download the resulting ZIP file, which is an archive of a web application that is configured with your choices.
+
+NOTE: If your IDE has the Spring Initializr integration, you can complete this process from your IDE.
+
+NOTE: You can also fork the project from Github and open it in your IDE or other editor.
+
+[[initial]]
+== Create a Resource Representation Class
+
+Now that you have set up the project and build system, you can create your web service.
+
+To model the greeting representation, create a resource representation class. To do so,
+provide a plain old Java object with fields, constructors, and accessors for the `id` and
+`content` data, as the following listing (from
+`src/main/java/com/example/nativeimage/Greeting.java`) shows:
+
+[source,java]
+----
+include::complete/src/main/java/com/example/nativeimage/Greeting.java[]
+----
+
+== Create a Resource Controller
+
+The `GreetingController` shown in the following listing (from
+`src/main/java/com/example/nativeimage/GreetingController.java`) handles `GET` requests
+for `/greeting` by returning a new instance of the `Greeting` class:
+
+====
+[source,java]
+----
+include::complete/src/main/java/com/example/nativeimage/GreetingController.java[]
+----
+====
+
+This controller is simple, but if you need to know more please refer to the https://spring.io/guides/gs/rest-service/[guide that covers getting started with REST].
+
+== Build and Run the Native Image
+
+You can run the application from the command line with Gradle or Maven, or you can run it from your IDE. You can also build a single executable JAR file that contains all the necessary dependencies, classes, and resources and run that. Or you can build a native image.
+
+NOTE: If the build fails with an error message about the `'gu' tool wasn't found` check that you have a GraalVM distribution installed and that it is the default `JAVA_HOME`.
+
+Gradle users should add the https://github.com/graalvm/native-build-tools[Native Build Tools] plugin to their project:
+
+```groovy
+id 'org.graalvm.buildtools.native' version '0.9.16'
+```
+
+Maven users don't need to do anything special, as long as the Spring Boot Maven Plugin has been correctly configured, which it is in the example via the parent `pom.xml`.
+
+If you use Gradle, you can build the native image by using `./gradlew nativeCompile` ` and then run the executable, as follows:
+
+```
+./build/native/nativeCompile/{project_id}
+```
+
+If you use Maven, you can build the native image with `./mvnw native:compile -P native` and then run the executable, as follows:
+
+```
+./target/{project_id}
+```
+
+Logging output is displayed. The service should be up and running within a few tens of milliseconds, or maybe even faster.
+
+
+== Test the Service
+
+Now that the service is up, visit `http://localhost:8080/greeting`, where you should see:
+
+====
+[source,json]
+----
+{"id":1,"content":"Hello, World!"}
+----
+====
+
+== Summary
+
+Congratulations! You have just developed and built a native image with Spring.
+
+== See Also
+
+The following guides may also be helpful:
+
+* https://spring.io/guides/gs/rest-service/[Building a RESTful Web Service]
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/footer.adoc[]
