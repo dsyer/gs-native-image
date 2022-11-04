@@ -14,7 +14,7 @@ You will build a service that will accept HTTP GET requests at
 
 == What You Need
 
-:java_version: 17
+:java_version: 17 (GraalVM 22.3)
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/prereq_editor_jdk_buildtools.adoc[]
 
 WARNING: Native image compilation is resource intensive. You are likely to need 8GB RAM (or more for larger applications), fast storage, and multiple CPU cores. If you don't have enough resources the build will probably just fail, rather than just run slower.
