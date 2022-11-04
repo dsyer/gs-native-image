@@ -20,11 +20,20 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }
 
 // TODO: remove this when it becomes the default
 tasks.named('bootBuildImage') {
 	buildpacks =  ['gcr.io/paketo-buildpacks/bellsoft-liberica:9.9.0-ea', 'gcr.io/paketo-buildpacks/java-native-image']
+}
+
+// TODO: remove this when it becomes the default
+graalvmNative {
+	binaries {
+		test {
+			classpath(sourceSets.aotTest.runtimeClasspath)
+		}
+	}
 }
