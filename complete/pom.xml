@@ -34,7 +34,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+				<configuration>
+				  <image>
+					<!-- TODO: remove this when it becomes the default -->
+					<buildpacks>
+					  <buildpack>gcr.io/paketo-buildpacks/bellsoft-liberica:9.9.0-ea</buildpack>
+					  <buildpack>gcr.io/paketo-buildpacks/java-native-image</buildpack>
+					</buildpacks>
+				  </image>
+				</configuration>
+			  </plugin>
 		</plugins>
 	</build>
 
