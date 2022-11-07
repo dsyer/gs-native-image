@@ -33,14 +33,14 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 [[scratch]]
 == Starting with Spring Initializr
 
-You can use this https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.0&packaging=jar&jvmVersion=17&groupId=com.example&artifactId=native-image&name=native-image&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.nativeimage&dependencies=web[pre-initialized project] and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
+You can use this https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.0&packaging=jar&jvmVersion=17&groupId=com.example&artifactId=native-image&name=native-image&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.nativeimage&dependencies=native,web[pre-initialized project] and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
 
 To manually initialize the project:
 
 . Navigate to https://start.spring.io.
 This service pulls in all the dependencies you need for an application and does most of the setup for you.
 . Choose either Gradle or Maven and the language you want to use. This guide assumes that you chose Java.
-. Click *Dependencies* and select *Spring Web*.
+. Click *Dependencies* and select *Spring Web* and *GraalVM Native Support*.
 . Click *Generate*.
 . Download the resulting ZIP file, which is an archive of a web application that is configured with your choices.
 
@@ -84,10 +84,10 @@ You can run the application from the command line with Gradle or Maven, or you c
 
 NOTE: If the build fails with an error message about the `'gu' tool wasn't found` check that you have a GraalVM distribution installed and that it is the default `JAVA_HOME`.
 
-Gradle users should add the https://github.com/graalvm/native-build-tools[Native Build Tools] plugin to their project:
+Gradle users need the https://github.com/graalvm/native-build-tools[Native Build Tools] plugin to their project in the `plugins` section of `build.gradle` (already there if you used Spring Initializr to generate the project):
 
 ```groovy
-id 'org.graalvm.buildtools.native' version '0.9.16'
+id 'org.graalvm.buildtools.native' version '0.9.17'
 ```
 
 Maven users don't need to do anything special, as long as the Spring Boot Maven Plugin has been correctly configured, which it is in the example via the parent `pom.xml`.
@@ -125,7 +125,7 @@ Now that the service is up, visit `http://localhost:8080/greeting`, where you sh
 ----
 ====
 
-You can also run unit tests compiled to native if you want to check your code works at runtime without actually launching the application. For Gradle users there is `./gradlew nativeTest`. For Maven users it's `./mvnw test -P native`. Any tests that you don't want or don't need to run in native can be marked as `@DisabledInNativeImage`.
+You can also run unit tests compiled to native if you want to check your code works at runtime without actually launching the application. For Gradle users there is `./gradlew nativeTest`. For Maven users it's `./mvnw test -P nativeTest`. Any tests that you don't want or don't need to run in native can be marked as `@DisabledInNativeImage`.
 
 == Summary
 

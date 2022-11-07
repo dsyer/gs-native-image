@@ -14,7 +14,7 @@
 	<name>native-image-complete</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -34,15 +34,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-				  <image>
-					<!-- TODO: remove this when it becomes the default -->
-					<buildpacks>
-					  <buildpack>gcr.io/paketo-buildpacks/bellsoft-liberica:9.9.0-ea</buildpack>
-					  <buildpack>gcr.io/paketo-buildpacks/java-native-image</buildpack>
-					</buildpacks>
-				  </image>
-				</configuration>
 			  </plugin>
 		</plugins>
 	</build>
